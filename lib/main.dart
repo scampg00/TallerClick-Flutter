@@ -1,0 +1,79 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(const TallerClickApp());
+
+class TallerClickApp extends StatelessWidget {
+  const TallerClickApp({super.key});
+  static const navy = Color(0xFF123A4A);
+  static const soft = Color(0xFFF1F6F7);
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'TallerClick',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: navy, surface: Colors.white),
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.white, foregroundColor: navy),
+        textTheme: const TextTheme(
+          headlineSmall: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: navy),
+          bodyMedium: TextStyle(fontSize: 16, color: navy),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: navy, foregroundColor: Colors.white,
+            minimumSize: const Size.fromHeight(52),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        ),
+        cardTheme: CardThemeData(color: soft, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+      ),
+      home: const HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+  @override
+  Widget build(BuildContext context) => BasePage(
+    title: '¿Qué necesitas hacer?',
+    children: [
+      const Text('Busca talleres, reserva una cita y gestiónala sin llamadas.'),
+      const SizedBox(height: 20),
+      FilledButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const DemoPage(title: 'Talleres disponibles', next: 'Servicios'))), child: const Text('Buscar taller')),
+      const SizedBox(height: 12),
+      OutlinedButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const DemoPage(title: 'Mis citas', next: 'Gestionar cita'))), child: const Text('Mis citas')),
+    ],
+  );
+}
+
+class DemoPage extends StatelessWidget {
+  const DemoPage({super.key, required this.title, required this.next});
+  final String title;
+  final String next;
+  @override
+  Widget build(BuildContext context) => BasePage(title: title, children: [
+    const Text('Pantalla de navegación base. Pendiente de conectar los datos de demostración y los tres recorridos completos en la semana 5.'),
+    const SizedBox(height: 18),
+    FilledButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DemoPage(title: next, next: 'Resumen y confirmación'))), child: Text('Continuar a $next')),
+    const SizedBox(height: 10),
+    OutlinedButton(onPressed: () => Navigator.pop(context), child: const Text('Volver')),
+  ]);
+}
+
+class BasePage extends StatelessWidget {
+  const BasePage({super.key, required this.title, required this.children});
+  final String title;
+  final List<Widget> children;
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: const Text('TallerClick')),
+    body: SafeArea(child: ListView(padding: const EdgeInsets.all(24), children: [
+      Text(title, style: Theme.of(context).textTheme.headlineSmall),
+      const SizedBox(height: 20),
+      ...children,
+    ])),
+  );
+}
