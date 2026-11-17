@@ -1,13 +1,8 @@
-# TallerClick · Semana 4 — esqueleto Flutter
+# Documentación de coordinación de TallerClick
 
-Base de tema visual y navegación del proyecto. **No sustituye al prototipo HTML de alta fidelidad ni implementa todavía las reservas funcionales.**
+Copia `AGENTS.md` y `TASKS.md` en la **raíz del repositorio Flutter**, junto a `pubspec.yaml`.
 
-## Inicio
-1. Instalar Flutter SDK.
-2. Ejecutar `flutter create .` en este directorio para generar archivos de plataforma.
-3. Ejecutar `flutter pub get` y `flutter run`.
-4. Verificar tamaños de objetivos, contraste, escalado y navegación en dispositivo real o emulador.
-5. Publicar el repositorio en GitLab/GitHub e incorporar su URL a la entrega.
+- `AGENTS.md`: reglas de trabajo para el equipo y los asistentes de IA.
+- `TASKS.md`: tareas detalladas por integrante, casillas y fechas para registrar cuándo se completan.
 
-## Pendiente
-Conectar R1, R2 y R3 completos, estados semánticos y realizar revisión cruzada. No se ha probado el SDK Flutter en este entorno.
+Las casillas están sin marcar porque la implementación y las pruebas aún no se han verificado. Antes de completar una fila, debe existir código/prototipo ejecutado y evidencia.
