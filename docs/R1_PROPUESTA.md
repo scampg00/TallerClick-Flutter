@@ -2,11 +2,11 @@
 
 Responsable: Santiago Campos García. Preparado el 2026-11-17.
 
-Estado: decisiones técnicas de R1 fijadas por el asistente por delegación de Santiago; pendientes de comunicación y revisión con Hugo e Isaac. Todavía sin implementar ni probar en Flutter. Este documento prepara S02–S06 de `TASKS.md` y la comprobación conjunta T01. No acredita su cierre.
+Estado: decisiones técnicas fijadas por delegación de Santiago y publicadas en la PR #1, fusionada el 2026-11-17. Santiago ha indicado continuar con el desarrollo. Búsqueda, ficha y selección de servicio implementadas y verificadas mediante pruebas de widgets; integración real con R2 y revisión de Hugo e Isaac pendientes. Consultar resultados y límites en [R1_VERIFICACION.md](R1_VERIFICACION.md). No acredita el cierre de tareas de `TASKS.md`.
 
 ## 1. Punto de partida y alcance
 
-`lib/main.dart` contiene `HomeScreen`, `BasePage`, el tema y pantallas provisionales `DemoPage`. Se aprovechará lo que existe cuando se acuerde la integración. Aún no hay modelos de taller/servicio ni catálogo en el código.
+Al preparar esta propuesta, `lib/main.dart` contenía `HomeScreen`, `BasePage`, el tema y pantallas provisionales `DemoPage`, sin modelos ni catálogo. La implementación actual conserva esa base y conecta Buscar taller con las dos pantallas de R1 y el catálogo descritos aquí.
 
 R1 permite buscar por zona, consultar un taller y seleccionar un servicio. R2 se encarga de fecha, hora, datos personales y confirmación. «Mis citas» pertenece a R3; R1 solo conserva su acceso desde el inicio.
 
@@ -76,7 +76,7 @@ El botón de continuación estará deshabilitado mientras no haya servicio selec
 
 ## 4. Decisiones técnicas para desarrollar R1
 
-Santiago ha delegado la elección técnica en el asistente. Se eligen los siguientes contratos y archivos como base concreta de trabajo. Esta decisión local no acredita aprobación de Hugo ni de Isaac: según `AGENTS.md`, se les comunicará antes de modificar modelos o navegación compartidos. En esta entrega se concreta el diseño en documentación.
+Santiago ha delegado la elección técnica en el asistente y ha indicado continuar con el desarrollo tras fusionar la documentación. Los contratos y archivos siguientes son la base de la implementación. Están publicados en la PR #1; no se atribuye a Hugo ni a Isaac una revisión o aprobación que no se haya registrado.
 
 ### Modelos simples e inmutables
 
@@ -97,7 +97,8 @@ La zona será un texto sencillo: Centro, Norte, Sur u Oeste. «Todas las zonas»
 | --- | --- |
 | `lib/data/workshop_catalog.dart` | Definir `workshopServices`, `workshops` y `workshopZones` como datos constantes a partir de las tablas de este documento. Incluir Oeste para el caso vacío. |
 | `lib/screens/workshop_search_screen.dart` | `WorkshopSearchScreen`: selector, búsqueda aplicada, listado y estado vacío en una misma pantalla. Recibir el catálogo y la función de construcción de R2 por constructor. |
-| `lib/screens/workshop_detail_screen.dart` | `WorkshopDetailScreen`: mostrar taller, seleccionar un servicio y abrir R2. Recibir el taller y la misma función de construcción de R2 por constructor. |
+| `lib/screens/workshop_detail_screen.dart` | `WorkshopDetailScreen`: mostrar taller, seleccionar un servicio y abrir R2. Recibir `workshop`, `workshops` y `bookingPageBuilder`; usar el catálogo recibido para resolver el taller y sus servicios por identificador. |
+| `lib/screens/booking_pending_screen.dart` | `BookingPendingScreen`: destino provisional con taller y servicio elegidos, aviso de que todavía no se pueden reservar citas y regreso a la ficha. Se sustituye al integrar R2. |
 | `lib/main.dart` (existente) | Conservar `TallerClickApp`, tema, `HomeScreen` y `BasePage`; sustituir únicamente el destino provisional de Buscar taller al integrar R1. |
 
 Las pantallas nuevas usarán widgets nativos y su propio `Scaffold` con `SafeArea` y contenido desplazable. No importarán `main.dart` para reutilizar `BasePage`, lo que evita una dependencia circular. Tampoco se extraerá o reescribirá ese componente compartido en esta fase.
@@ -108,7 +109,7 @@ Se usará `Navigator.push` con `MaterialPageRoute`, como en el código actual. N
 
 El punto de conexión será un parámetro obligatorio llamado `bookingPageBuilder`, de tipo `Widget Function(Workshop workshop, WorkshopService service)`, recibido por la búsqueda y transmitido a la ficha. Al continuar, la ficha validará la selección y usará esa función para construir la pantalla R2 dentro de un `MaterialPageRoute`.
 
-Isaac implementará su pantalla recibiendo `Workshop workshop` y `WorkshopService service`. El punto de integración proporcionará una función que construya esa pantalla con ambos datos. Su nombre de clase y archivo quedan dentro de R2; R1 no necesita importarlos.
+Isaac implementará su pantalla recibiendo `Workshop workshop` y `WorkshopService service`. El punto de integración proporcionará una función que construya esa pantalla con ambos datos mediante el parámetro opcional `bookingPageBuilder` de `TallerClickApp`. Sin ese parámetro, la app abre `BookingPendingScreen`, que no crea citas. El nombre de clase y archivo definitivos de R2 quedan dentro de ese recorrido; R1 no necesita importarlos.
 
 La búsqueda mantiene su filtro con `setState` y la ficha mantiene el servicio seleccionado con `setState`. Las pantallas permanecen en la pila al abrir la siguiente, por lo que volver conserva el contexto durante ese recorrido. No se requiere guardar esa selección entre reinicios de la aplicación.
 
@@ -122,7 +123,7 @@ Para R1 se conservan el catálogo, el flujo y los textos de este documento. No s
 
 Resumen preparado para comunicar a Hugo e Isaac: «R1 usará Workshop y WorkshopService con identificadores estables, catálogo constante, dos pantallas y Navigator. La entrada a R2 recibirá taller y servicio mediante bookingPageBuilder. Conservaremos el tema y el inicio existentes; el cambio de main.dart se limitará a conectar Buscar taller y el constructor de R2».
 
-No se ha enviado ningún mensaje al equipo ni se ha registrado su aprobación. Si ya han publicado contratos fuera de este repositorio, se revisarán antes de implementar para evitar modelos incompatibles.
+Las decisiones están publicadas en la PR #1, pero no se ha enviado un mensaje al equipo ni se ha registrado su aprobación. La revisión con Hugo e Isaac y la adaptación a otros contratos que puedan publicar siguen pendientes.
 
 ## 5. Accesibilidad prevista
 
@@ -140,7 +141,7 @@ No se ha enviado ningún mensaje al equipo ni se ha registrado su aprobación. S
 
 ## 6. Comprobaciones reproducibles para la implementación
 
-Estado de todos los casos: **pendientes de ejecución**. No son pruebas superadas del código actual.
+Estos son los casos definidos antes de la implementación. Los resultados automatizados, las capturas y las comprobaciones manuales aún pendientes se distinguen en [R1_VERIFICACION.md](R1_VERIFICACION.md).
 
 | Caso | Pasos | Resultado esperado |
 | --- | --- | --- |
@@ -158,7 +159,7 @@ Estado de todos los casos: **pendientes de ejecución**. No son pruebas superada
 
 Al implementar: ejecutar `flutter analyze`, `flutter test` y `flutter run -d <id-del-dispositivo>` (obtener el identificador con `flutter devices`). Registrar SDK, dispositivo/plataforma, comandos, resultados reales, casos ejecutados y rutas de capturas. TalkBack requiere comprobación en Android; una ejecución en otra plataforma no acredita esa prueba.
 
-Antes de utilizar la suite, actualizar `test/widget_test.dart`: actualmente prueba un contador y referencia `MyApp`, pero la aplicación define `TallerClickApp`.
+`test/widget_test.dart` ya sustituye la prueba del contador y la referencia inexistente a `MyApp` por seis pruebas del flujo real de R1.
 
 ## 7. Orden de trabajo y revisión
 
@@ -169,4 +170,4 @@ Antes de utilizar la suite, actualizar `test/widget_test.dart`: actualmente prue
 5. Conectar con R2 y comprobar T01 junto a Isaac (S05).
 6. Revisar el inicio existente (S01), accesibilidad (S07) y ejecución con evidencias (S08).
 
-Esta entrega actualiza únicamente `docs/R1_PROPUESTA.md`. Las rutas mencionadas en este documento se refieren a la raíz del repositorio. No cambia modelos, tema, navegación, código de la aplicación ni casillas o fechas de `TASKS.md`. Las decisiones técnicas están concretadas; quedan pendientes la comunicación al equipo, su implementación y las comprobaciones descritas.
+Las rutas mencionadas en este documento se refieren a la raíz del repositorio. El registro de verificación detalla los archivos implementados y las pruebas realizadas. Las casillas y fechas de `TASKS.md` permanecen intactas, pendientes de validación y evidencia de integración.
