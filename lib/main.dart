@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'data/workshop_catalog.dart';
+import 'data/appointment_repository.dart';
+import 'screens/my_appointments_screen.dart';
 import 'models/workshop.dart';
 import 'models/workshop_service.dart';
 import 'screens/booking_pending_screen.dart';
@@ -9,10 +11,11 @@ import 'screens/workshop_search_screen.dart';
 void main() => runApp(const TallerClickApp());
 
 class TallerClickApp extends StatelessWidget {
-  const TallerClickApp({super.key, this.bookingPageBuilder});
+  const TallerClickApp({super.key, this.bookingPageBuilder, this.repository});
 
   final Widget Function(Workshop workshop, WorkshopService service)?
   bookingPageBuilder;
+  final AppointmentRepository? repository;
   static const navy = Color(0xFF123A4A);
   static const soft = Color(0xFFF1F6F7);
   @override
@@ -57,17 +60,26 @@ class TallerClickApp extends StatelessWidget {
         ),
       ),
       home: HomeScreen(
+        repository: repository ?? demoAppointments,
         bookingPageBuilder:
             bookingPageBuilder ??
-            (workshop, service) =>
-                BookingPendingScreen(workshop: workshop, service: service),
+            (workshop, service) => BookingPendingScreen(
+              workshop: workshop,
+              service: service,
+              repository: repository ?? demoAppointments,
+            ),
       ),
     );
   }
 }
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key, required this.bookingPageBuilder});
+  final AppointmentRepository repository;
+  const HomeScreen({
+    super.key,
+    required this.bookingPageBuilder,
+    required this.repository,
+  });
 
   final Widget Function(Workshop workshop, WorkshopService service)
   bookingPageBuilder;
@@ -98,42 +110,10 @@ class HomeScreen extends StatelessWidget {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) =>
-                const DemoPage(title: 'Mis citas', next: 'Gestionar cita'),
+            builder: (_) => MyAppointmentsScreen(repository: repository),
           ),
         ),
         child: const Text('Mis citas'),
-      ),
-    ],
-  );
-}
-
-class DemoPage extends StatelessWidget {
-  const DemoPage({super.key, required this.title, required this.next});
-  final String title;
-  final String next;
-  @override
-  Widget build(BuildContext context) => BasePage(
-    title: title,
-    children: [
-      const Text(
-        'Pantalla de navegación base. Pendiente de conectar los datos de demostración y los tres recorridos completos en la semana 5.',
-      ),
-      const SizedBox(height: 18),
-      FilledButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) =>
-                DemoPage(title: next, next: 'Resumen y confirmación'),
-          ),
-        ),
-        child: Text('Continuar a $next'),
-      ),
-      const SizedBox(height: 10),
-      OutlinedButton(
-        onPressed: () => Navigator.pop(context),
-        child: const Text('Volver'),
       ),
     ],
   );

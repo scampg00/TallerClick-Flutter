@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
+
 import '../models/workshop.dart';
 import '../models/workshop_service.dart';
 
-enum AppointmentStatus { confirmed }
+enum AppointmentStatus { confirmed, cancelled }
 
 class Appointment {
   const Appointment({
@@ -12,6 +14,7 @@ class Appointment {
     required this.name,
     required this.phone,
     required this.status,
+    this.rescheduled = false,
   });
 
   final String reference;
@@ -21,12 +24,25 @@ class Appointment {
   final String name;
   final String phone;
   final AppointmentStatus status;
+  final bool rescheduled;
+
+  Appointment updated({DateTime? slot, AppointmentStatus? status}) =>
+      Appointment(
+        reference: reference,
+        workshop: workshop,
+        service: service,
+        slot: slot ?? this.slot,
+        name: name,
+        phone: phone,
+        status: status ?? this.status,
+        rescheduled: rescheduled || slot != null,
+      );
 }
 
 /// Shared by booking and consultation for the lifetime of this demo process.
 final demoAppointments = AppointmentRepository();
 
-class AppointmentRepository {
+class AppointmentRepository extends ChangeNotifier {
   AppointmentRepository({DateTime Function()? now})
     : _now = now ?? DateTime.now;
 
@@ -56,6 +72,7 @@ class AppointmentRepository {
         slot.hour != 10 &&
         !_appointments.any(
           (appointment) =>
+              appointment.status == AppointmentStatus.confirmed &&
               appointment.workshop.id == workshop.id &&
               appointment.slot == slot,
         );
@@ -85,6 +102,39 @@ class AppointmentRepository {
       status: AppointmentStatus.confirmed,
     );
     _appointments.add(appointment);
+    notifyListeners();
     return appointment;
+  }
+
+  Appointment? find(String reference) {
+    for (final appointment in _appointments) {
+      if (appointment.reference == reference) return appointment;
+    }
+    return null;
+  }
+
+  // The expected immutable snapshot rejects stale and repeated operations.
+  bool reschedule(Appointment expected, DateTime slot) {
+    final index = _appointments.indexOf(expected);
+    if (index < 0 ||
+        expected.status != AppointmentStatus.confirmed ||
+        !isAvailable(expected.workshop, slot)) {
+      return false;
+    }
+    _appointments[index] = expected.updated(slot: slot);
+    notifyListeners();
+    return true;
+  }
+
+  bool cancel(Appointment expected) {
+    final index = _appointments.indexOf(expected);
+    if (index < 0 || expected.status != AppointmentStatus.confirmed) {
+      return false;
+    }
+    _appointments[index] = expected.updated(
+      status: AppointmentStatus.cancelled,
+    );
+    notifyListeners();
+    return true;
   }
 }

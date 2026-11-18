@@ -1,5 +1,7 @@
 # R1 — Implementación y verificación
 
+**Actualización 2026-11-18:** la entrada real a R2 ya está conectada y cubierta por `widget_test.dart` y por el recorrido integrado de `appointment_management_test.dart`. «Mis citas» de inicio conecta con R3. El texto que sigue conserva el registro histórico de R1; sus referencias a destinos provisionales corresponden a esa entrega. Resultados actuales y pendientes en [R3_VERIFICACION.md](R3_VERIFICACION.md).
+
 Fecha de ejecución: 2026-11-17. Responsable del recorrido: Santiago Campos García.
 
 ## Resultado y alcance

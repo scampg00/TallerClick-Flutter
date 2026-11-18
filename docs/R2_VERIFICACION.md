@@ -1,5 +1,7 @@
 # R2 — Reserva y verificación
 
+**Actualización 2026-11-18:** «Mis citas» de inicio ya conecta con el mismo repositorio y R3 permite cambiar y cancelar. Selector y resumen compartidos; contrato ampliado preparado para revisión de Hugo. Ver [entrega R3](R3_VERIFICACION.md). El resto conserva el registro de la entrega inicial de Isaac.
+
 Responsable del recorrido R2: Isaac Caño Calvo.
 
 ## Recorrido

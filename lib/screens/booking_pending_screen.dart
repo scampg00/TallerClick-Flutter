@@ -11,8 +11,10 @@ class BookingPendingScreen extends StatelessWidget {
     super.key,
     required this.workshop,
     required this.service,
+    this.repository,
   });
 
+  final AppointmentRepository? repository;
   final Workshop workshop;
   final WorkshopService service;
 
@@ -20,6 +22,6 @@ class BookingPendingScreen extends StatelessWidget {
   Widget build(BuildContext context) => BookingScreen(
     workshop: workshop,
     service: service,
-    repository: demoAppointments,
+    repository: repository ?? demoAppointments,
   );
 }
