@@ -12,7 +12,12 @@ Future<void> showVisible(WidgetTester tester, Finder finder) async {
     await tester.scrollUntilVisible(
       finder,
       200,
-      scrollable: find.byType(Scrollable).last,
+      scrollable: find
+          .descendant(
+            of: find.byType(ListView).last,
+            matching: find.byType(Scrollable),
+          )
+          .first,
     );
   }
   await tester.ensureVisible(finder);
@@ -134,7 +139,7 @@ void main() {
     expect(tester.widget<FilledButton>(continueButton).onPressed, isNull);
   });
 
-  testWidgets('La continuación provisional explica que no hay ninguna cita', (
+  testWidgets('La app abre R2 con los datos elegidos y permite regresar', (
     tester,
   ) async {
     await tester.pumpWidget(const TallerClickApp());
@@ -143,10 +148,7 @@ void main() {
     await tapVisible(tester, find.text('Continuar con este servicio'));
     expect(find.text('Taller: Taller Demo Plaza'), findsOneWidget);
     expect(find.text('Servicio: Revisión de batería'), findsOneWidget);
-    expect(
-      find.textContaining('No se ha creado ninguna cita.'),
-      findsOneWidget,
-    );
+    expect(find.text('Elige fecha y hora'), findsOneWidget);
     await tapVisible(tester, find.text('Volver a los servicios'));
     expect(
       find.text('Servicio seleccionado: Revisión de batería'),
@@ -212,7 +214,7 @@ void main() {
     await tapVisible(tester, find.text('Revisión de batería'));
     await tapVisible(tester, find.text('Continuar con este servicio'));
     expect(tester.takeException(), isNull);
-    expect(find.text('Servicio elegido'), findsOneWidget);
+    expect(find.text('Elige fecha y hora'), findsOneWidget);
     await tapVisible(tester, find.text('Volver a los servicios'));
     await tapVisible(tester, find.text('Volver a los talleres'));
     tester
