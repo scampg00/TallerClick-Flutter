@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../data/appointment_repository.dart';
 import '../models/workshop.dart';
 import '../models/workshop_service.dart';
+import 'booking_screen.dart';
 
-/// Temporary destination until the booking flow supplies its page builder.
+/// Entry point used by the current app shell.
 class BookingPendingScreen extends StatelessWidget {
   const BookingPendingScreen({
     super.key,
@@ -15,44 +17,9 @@ class BookingPendingScreen extends StatelessWidget {
   final WorkshopService service;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('TallerClick'),
-      leading: IconButton(
-        tooltip: 'Volver a los servicios',
-        onPressed: () => Navigator.maybePop(context),
-        icon: const Icon(Icons.arrow_back),
-      ),
-    ),
-    body: SafeArea(
-      child: ListView(
-        padding: const EdgeInsets.all(24),
-        children: [
-          Semantics(
-            header: true,
-            child: Text(
-              'Servicio elegido',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text('Taller: ${workshop.name}'),
-          Text('Servicio: ${service.name}'),
-          const SizedBox(height: 16),
-          const Text(
-            'La reserva de citas aún no está disponible en este prototipo. '
-            'No se ha creado ninguna cita.',
-          ),
-          const SizedBox(height: 24),
-          OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size.fromHeight(48),
-            ),
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Volver a los servicios'),
-          ),
-        ],
-      ),
-    ),
+  Widget build(BuildContext context) => BookingScreen(
+    workshop: workshop,
+    service: service,
+    repository: demoAppointments,
   );
 }
