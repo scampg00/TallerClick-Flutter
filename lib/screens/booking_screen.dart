@@ -4,6 +4,7 @@ import '../data/appointment_repository.dart';
 import '../models/workshop.dart';
 import '../models/workshop_service.dart';
 import 'my_appointments_screen.dart';
+import '../widgets/appointment_slot_picker.dart';
 
 enum _Step { schedule, contact, review, confirmed }
 
@@ -101,7 +102,9 @@ class _BookingScreenState extends State<BookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appointment = _appointment;
+    final appointment = _appointment == null
+        ? null
+        : widget.repository.find(_appointment!.reference);
     final title = switch (_step) {
       _Step.schedule => 'Elige fecha y hora',
       _Step.contact => 'Datos de contacto',
@@ -171,62 +174,19 @@ class _BookingScreenState extends State<BookingScreen> {
             'La hora elegida ya no está disponible. Elige otra franja.',
           ),
         ),
-      const Text('Día'),
-      DropdownButton<DateTime>(
-        value: day,
-        isExpanded: true,
-        itemHeight: null,
-        items: [
-          for (final option in days)
-            DropdownMenuItem(
-              value: option,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text(appointmentDay(option)),
-              ),
-            ),
-        ],
-        onChanged: (option) {
-          if (option == day) return;
-          setState(() {
-            _day = option;
-            _slot = null;
-          });
-        },
-      ),
-      const SizedBox(height: 16),
-      const Text('Horarios'),
-      RadioGroup<DateTime>(
-        groupValue: selected,
-        onChanged: (slot) => setState(() {
-          _slot = slot;
+      AppointmentSlotPicker(
+        repository: widget.repository,
+        workshop: widget.workshop,
+        day: day,
+        slot: selected,
+        onDayChanged: (option) => setState(() {
+          _day = option;
+          _slot = null;
+        }),
+        onSlotChanged: (option) => setState(() {
+          _slot = option;
           _slotChanged = false;
         }),
-        child: Column(
-          children: [
-            for (final slot in hours)
-              if (widget.repository.isAvailable(widget.workshop, slot))
-                RadioListTile<DateTime>(
-                  value: slot,
-                  title: Text('${appointmentTime(slot)} · Disponible'),
-                  selected: selected == slot,
-                )
-              else
-                ListTile(
-                  leading: const Icon(Icons.event_busy_outlined),
-                  title: Text('${appointmentTime(slot)} · Ocupada'),
-                ),
-          ],
-        ),
-      ),
-      const SizedBox(height: 12),
-      Semantics(
-        liveRegion: true,
-        child: Text(
-          selected == null
-              ? 'Elige una hora disponible para continuar.'
-              : 'Hora seleccionada: ${appointmentTime(selected)}',
-        ),
       ),
       const SizedBox(height: 16),
       ElevatedButton(
@@ -322,12 +282,15 @@ class _BookingScreenState extends State<BookingScreen> {
     ),
     const SizedBox(height: 20),
     ElevatedButton(
-      onPressed: () => Navigator.push<void>(
-        context,
-        MaterialPageRoute(
-          builder: (_) => MyAppointmentsScreen(repository: widget.repository),
-        ),
-      ),
+      onPressed: () async {
+        await Navigator.push<void>(
+          context,
+          MaterialPageRoute(
+            builder: (_) => MyAppointmentsScreen(repository: widget.repository),
+          ),
+        );
+        if (mounted) setState(() {});
+      },
       child: const Text('Ir a Mis citas'),
     ),
     const SizedBox(height: 12),
