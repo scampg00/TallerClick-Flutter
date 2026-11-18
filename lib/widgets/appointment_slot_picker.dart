@@ -11,6 +11,7 @@ class AppointmentSlotPicker extends StatelessWidget {
     required this.workshop,
     required this.day,
     required this.slot,
+    this.currentSlot,
     required this.onDayChanged,
     required this.onSlotChanged,
   });
@@ -18,6 +19,7 @@ class AppointmentSlotPicker extends StatelessWidget {
   final Workshop workshop;
   final DateTime day;
   final DateTime? slot;
+  final DateTime? currentSlot;
   final ValueChanged<DateTime?> onDayChanged;
   final ValueChanged<DateTime?> onSlotChanged;
 
@@ -53,7 +55,12 @@ class AppointmentSlotPicker extends StatelessWidget {
         child: Column(
           children: [
             for (final option in repository.slotsFor(day))
-              if (repository.isAvailable(workshop, option))
+              if (option == currentSlot)
+                ListTile(
+                  leading: const Icon(Icons.event_available_outlined),
+                  title: Text('${appointmentTime(option)} · Tu hora actual'),
+                )
+              else if (repository.isAvailable(workshop, option))
                 RadioListTile<DateTime>(
                   value: option,
                   title: Text('${appointmentTime(option)} · Disponible'),

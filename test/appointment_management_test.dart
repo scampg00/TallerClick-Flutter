@@ -73,6 +73,9 @@ void main() {
           await tapVisible(tester, find.text('Ver cita TC-0001'));
           await captureEvidence(tester, 'detalle-$scale');
           await tapVisible(tester, find.text('Cambiar fecha y hora'));
+          await showVisible(tester, find.text('09:00 · Tu hora actual'));
+          expect(find.text('09:00 · Tu hora actual'), findsOneWidget);
+          await tapVisible(tester, find.text('09:00 · Tu hora actual'));
           await tapVisible(tester, find.text('10:00 · Ocupada'));
           await showVisible(tester, find.text('Revisar cambio'));
           expect(
@@ -162,5 +165,23 @@ void main() {
     expect(repository.find(other.reference), same(other));
     await tapVisible(tester, find.text('Cambiar fecha y hora'));
     expect(find.text('11:00 · Ocupada'), findsOneWidget);
+  });
+
+  testWidgets('Una cita cancelada no vuelve a ofrecer la cancelación', (
+    tester,
+  ) async {
+    final repository = newRepository();
+    seed(repository, 9);
+    await tester.pumpWidget(TallerClickApp(repository: repository));
+    await tapVisible(tester, find.text('Mis citas'));
+    await tapVisible(tester, find.text('Ver cita TC-0001'));
+    await tapVisible(tester, find.text('Cancelar cita'));
+    await tapVisible(tester, find.text('Sí, cancelar cita'));
+    await tapVisible(tester, find.text('Volver a Mis citas'));
+    await tapVisible(tester, find.text('Ver cita TC-0001'));
+    expect(find.text('Cita cancelada'), findsWidgets);
+    expect(find.text('Cancelar cita'), findsNothing);
+    expect(find.text('Sí, cancelar cita'), findsNothing);
+    expect(repository.appointments, hasLength(1));
   });
 }

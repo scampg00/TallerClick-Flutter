@@ -1,7 +1,14 @@
 # TallerClick — Tareas de desarrollo y verificación (semana 5)
 
-**Estado actualizado (2026-11-18):** R1 y R2 conectados; implementado R3 (consulta, cambio y cancelación). «Mis citas» de inicio usa el repositorio compartido. Evidencias y límites en [R3_VERIFICACION.md](docs/R3_VERIFICACION.md). Pendientes validación de responsables y coordinador, Android, TalkBack y Excel del Grupo E. Las casillas pendientes se conservan hasta esa validación.
+**Estado actualizado (2026-11-18):** R1 y R2 conectados; implementado R3 (consulta, cambio y cancelación). «Mis citas» de inicio usa el repositorio compartido. Evidencias y límites en [R3_VERIFICACION.md](docs/R3_VERIFICACION.md). Consultado el Excel del Grupo E y preparada una [comparación con Flutter](docs/GRUPO_E_REVISION_FLUTTER.md). Pendientes validación de responsables y coordinador, revisión visual completa en Android y prueba audible con TalkBack. Las casillas pendientes se conservan hasta esa validación.
 
+## Pendientes de Hugo para cerrar la entrega
+
+- [ ] Ejecutar al menos un recorrido con TalkBack audible; registrar orden de foco y anuncios de selección, errores, confirmación, cambio y cancelación. Comprobar las etiquetas de los campos y el selector de día señalados en [la revisión](docs/REVISION_ACCESIBILIDAD.md).
+- [ ] Completar la revisión visual de todas las pantallas y estados con texto normal y al 200 %, y medir contrastes de componentes, bordes y estados aún no cubiertos. [Prueba parcial en Android](docs/ANDROID_VERIFICACION.md).
+- [ ] Validar con el equipo las ocho incidencias del [Grupo E](docs/GRUPO_E_REVISION_FLUTTER.md), asignar responsables y adjuntar evidencia; comprobar en particular foco, anuncios y reconocimiento sin color.
+- [ ] Integrar la [propuesta de actualización](docs/MEMORIA_V5_ACTUALIZACION.md) en la memoria editable y generar el PDF final con las evidencias reales.
+- [ ] Revisar e integrar los cambios con el equipo y cerrar únicamente las tareas que tengan evidencia y validación. Las comprobaciones automáticas y el emulador no sustituyen esas validaciones.
 **Cómo usar la tabla:** una fila está completada solo cuando su resultado y evidencia existen. Cambiar `[ ]` a `[x]`, escribir fecha `AAAA-MM-DD` y poner ruta de captura, prueba, commit o PR. Una revisión pendiente no equivale a un aprobado.
 
 ## 0. Coordinación: contratos compartidos (Hugo, antes de programar recorridos)
@@ -68,7 +75,7 @@ Actualización solicitada por Santiago el 2026-11-18 tras revisar la entrega. La
 | [ ] | H10 | Coordinar prueba de texto al **200 %** con capturas normal/ampliado | R1–R3 utilizables, o incidencias registradas | — | — |
 | [ ] | H11 | Coordinar prueba **TalkBack** en al menos un recorrido | Secuencia y observaciones anotadas | — | — |
 | [ ] | H12 | Verificar el anuncio y la persistencia de errores/éxitos | Mensaje entendible visualmente y con lector | — | — |
-| [ ] | H13 | Ejecutar `flutter analyze`, `flutter test` y documentar resultado | Registro reproducible (no basta con ejecutar) | — | — |
+| [ ] | H13 | Ejecutar `flutter analyze`, `flutter test` y documentar resultado | Registro reproducible (no basta con ejecutar) | — | Análisis sin incidencias y 16 pruebas superadas en Windows; [registro](docs/HUGO_INTEGRACION_ACCESIBILIDAD.md). Pendiente validación del responsable. |
 | [ ] | H14 | Coordinar validación de 8 incidencias del Grupo E | Cada incidencia con corregida/no corregida, evidencia y responsable | — | — |
 | [ ] | H15 | Revisar PRs y publicar versión integrada en GitHub | Código fuente disponible y revisado | — | — |
 | [ ] | H16 | Coordinar evidencias y actualizar **Memoria v5** | Documento refleja pruebas reales y pendientes | — | — |
@@ -87,18 +94,18 @@ Actualización solicitada por Santiago el 2026-11-18 tras revisar la entrega. La
 
 ## 6. Registro de incidencias (sin atribuir soluciones no realizadas)
 
-La evaluación cruzada del **Grupo E** registró 8 incidencias: 1 alta, 4 medias y 3 bajas. Se requiere revisar el Excel original y copiar aquí el detalle exacto para asignar responsables y confirmar correcciones. **No marcar como solucionadas de forma automática.**
+La evaluación del **Grupo E** del 10/11/2026 registró 8 incidencias sobre el prototipo HTML anterior: 1 alta, 4 medias y 3 bajas. Se ha consultado el Excel original facilitado y se transcriben a continuación sus descripciones y severidades. El estado del prototipo Flutter se analiza en [revisión de incidencias](docs/GRUPO_E_REVISION_FLUTTER.md); las casillas siguen abiertas hasta su validación y no implican una nueva prueba del prototipo HTML.
 
 | Hecho | Incidencia | Severidad | Responsable asignado | Solución / decisión | Fecha completado | Evidencia |
 |:---:|---|---|---|---|---|---|
-| [ ] | GE-01 · Pendiente de transcribir | — | — | — | — | — |
-| [ ] | GE-02 · Pendiente de transcribir | — | — | — | — | — |
-| [ ] | GE-03 · Pendiente de transcribir | — | — | — | — | — |
-| [ ] | GE-04 · Pendiente de transcribir | — | — | — | — | — |
-| [ ] | GE-05 · Pendiente de transcribir | — | — | — | — | — |
-| [ ] | GE-06 · Pendiente de transcribir | — | — | — | — | — |
-| [ ] | GE-07 · Pendiente de transcribir | — | — | — | — | — |
-| [ ] | GE-08 · Pendiente de transcribir | — | — | — | — | — |
+| [ ] | I01 · La hora 11:00 aparece siempre con estilo de botón principal (fondo oscuro) antes de elegir nada; en R2 (cambiar hora) sigue resaltada 11:00 aunque la cita esté a las 09:00. No hay texto ni aria-pressed que indique qué hora es la elegida o la actual. | Media | Pendiente de asignar | Selector Flutter con selección explícita; pendiente comprobar semántica y hora actual con lector. | — | [Análisis](docs/GRUPO_E_REVISION_FLUTTER.md) |
+| [ ] | I02 · Después de «Tu cita se ha reservado correctamente» el botón «← Volver» sigue activo y vuelve a S5 con los datos; al pulsar «Confirmar reserva» otra vez se crea una nueva reserva (TC-002) que sustituye a TC-001 sin aviso. | Alta | Pendiente de asignar | Flutter bloquea la repetición; cubierto por prueba. | — | [Prueba](test/booking_test.dart) |
+| [ ] | I03 · Tras cancelar, pulsando «← Volver» se llega de nuevo a «¿Cancelar esta cita?» con la cita ya cancelada y el botón «Sí, cancelar definitivamente» activo. | Media | Pendiente de asignar | Flutter conserva la cancelación y no ofrece repetirla; comprobar ejecución manual. | — | [Prueba](test/appointment_management_test.dart) |
+| [ ] | I04 · El mensaje de error es siempre «Debes completar el nombre y el contacto antes de confirmar» aunque solo falte uno de los dos; ningún campo se marca (sin borde de error ni aria-invalid) y el mensaje aparece debajo de ambos campos. | Media | Pendiente de asignar | Mensajes específicos por campo en Flutter; pendiente anuncio con lector. | — | [Prueba](test/booking_test.dart) |
+| [ ] | I05 · El campo Contacto acepta cualquier texto (probado con «x») y la reserva se confirma. | Baja | Pendiente de asignar | Flutter rechaza «x» y muestra ayuda de formato; pendiente validación. | — | [Prueba](test/booking_test.dart) |
+| [ ] | I06 · Al cambiar de pantalla el botón pulsado desaparece y el foco pasa al `<body>`; además todo el contenido está en aria-live, así que se relee la vista entera. | Media | Pendiente de asignar | Hay regiones activas localizadas; foco y anuncios reales pendientes. | — | [Análisis](docs/GRUPO_E_REVISION_FLUTTER.md) |
+| [ ] | I07 · Textos y estilos poco consistentes: «Ir al inicio» (S6) vs «Volver al inicio» (S7); «Volver y corregir» en S5 lleva a S4 (horas); el estilo principal se aplica a la primera opción de listas (Taller Centro, Revisión general) aunque no sea la acción principal. | Baja | Pendiente de asignar | Flutter usa etiquetas de acción concretas y opciones equivalentes; pendiente revisión manual. | — | [Análisis](docs/GRUPO_E_REVISION_FLUTTER.md) |
+| [ ] | I08 · La cancelación se muestra con la misma caja verde de éxito que una reserva; la caja de error no tiene icono ni la palabra «Error», y en grises se ve como una caja gris neutra (se entiende solo por el texto). | Baja | Pendiente de asignar | Estados y errores escritos en Flutter; pendiente evaluación de avisos y simulación cromática. | — | [Análisis](docs/GRUPO_E_REVISION_FLUTTER.md) |
 
 ## 7. Definición de terminado
 

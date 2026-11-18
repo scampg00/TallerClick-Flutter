@@ -17,5 +17,8 @@ El SDK requerido figura en `pubspec.yaml`. Para Android debe haber un emulador o
 - [Verificación R1](docs/R1_VERIFICACION.md)
 - [Verificación R2](docs/R2_VERIFICACION.md)
 - [Verificación R3, contratos y capturas](docs/R3_VERIFICACION.md)
+- [Integración y revisión de accesibilidad](docs/HUGO_INTEGRACION_ACCESIBILIDAD.md)
+- [Incidencias del Grupo E y contraste con Flutter](docs/GRUPO_E_REVISION_FLUTTER.md)
+- [Propuesta de actualización de la Memoria v5](docs/MEMORIA_V5_ACTUALIZACION.md)
 
 Las pruebas automáticas no sustituyen la revisión manual con Android y TalkBack. Las casillas se cierran con evidencia y validación del responsable y del coordinador.
