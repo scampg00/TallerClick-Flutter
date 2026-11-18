@@ -101,6 +101,10 @@ void main() {
       expect(tester.widget<ElevatedButton>(continueButton).onPressed, isNull);
       await tapVisible(tester, find.text('11:00 · Disponible'));
       await tapVisible(tester, continueButton);
+      expect(
+        find.text('De 9 a 15 dígitos; puedes incluir el prefijo.'),
+        findsOneWidget,
+      );
 
       await tapVisible(tester, find.text('Revisar reserva'));
       expect(find.text('Escribe tu nombre.'), findsOneWidget);
@@ -111,7 +115,7 @@ void main() {
       );
       await tester.enterText(
         find.widgetWithText(TextFormField, 'Teléfono'),
-        '123',
+        'x',
       );
       await tapVisible(tester, find.text('Revisar reserva'));
       expect(

@@ -1,0 +1,18 @@
+# Revisión del Grupo E frente a Flutter
+
+Fuente: `TallerClick_Plantilla_Revision_Cruzada_S4_Grupo_E.xlsx`, hoja «Incidencias», filas 5–12; revisión del 10/11/2026 sobre el prototipo HTML en Chrome. El texto exacto y las severidades figuran en [TASKS.md](../TASKS.md). El recorrido y los números de pantalla del Excel corresponden al prototipo anterior; no son una reproducción automática de los mismos pasos en Flutter.
+
+Esta comparación se realizó el 18/11/2026 por inspección del código y pruebas de widgets en Windows, Flutter 3.47.4. «Cubierto» se refiere únicamente al comportamiento indicado en Flutter y a la prueba citada; no implica aprobación de los responsables ni validación con lector o en Android.
+
+| ID | Resultado en Flutter y evidencia | Pendiente |
+| --- | --- | --- |
+| I01 · Media | `AppointmentSlotPicker` usa opciones de selección única, no preselecciona la hora y escribe «Hora seleccionada»; el resumen muestra fecha y hora actuales. [Pruebas de reserva](../test/booking_test.dart) y [gestión](../test/appointment_management_test.dart). | El selector identifica la franja actual como «Tu hora actual» y la prueba comprueba que no es seleccionable; pendiente comprobar el anuncio con TalkBack y validación conjunta. |
+| I02 · Alta | La reserva se crea una vez; dos llamadas a confirmar mantienen una cita. Volver desde la confirmación sale de la reserva; la prueba vuelve a la ficha y comprueba una sola referencia. [Prueba](../test/booking_test.dart). | Ejecución manual y validación conjunta. |
+| I03 · Media | Tras cancelar, la vista muestra el estado y deja de ofrecer la acción. La prueba vuelve al listado y reabre el detalle sin botón de cancelación ni cita adicional. [Prueba](../test/appointment_management_test.dart). | Comprobar también la secuencia real de regreso del dispositivo y validación conjunta. |
+| I04 · Media | Los campos muestran errores específicos; la prueba conserva nombre al corregir teléfono. [Formulario](../lib/screens/booking_screen.dart), [prueba](../test/booking_test.dart). | Verificar asociación y anuncio de cada error con TalkBack. |
+| I05 · Baja | El teléfono inválido «x» se rechaza y se permite corregirlo sin perder el nombre; se añadió ayuda visible sobre la longitud y el prefijo. [Prueba](../test/booking_test.dart). | Revisar legibilidad de la ayuda ampliada y validar con Isaac. |
+| I06 · Media | Por inspección, se usan regiones activas en encabezados y mensajes concretos, no una región sobre toda la pantalla. | No se ha medido el foco al cambiar de pantalla ni la lectura efectiva con teclado y TalkBack. No se considera resuelta. |
+| I07 · Baja | Las acciones de regreso actuales expresan su destino; los talleres se presentan como opciones equivalentes y los servicios usan el mismo control de selección. [Búsqueda](../lib/screens/workshop_search_screen.dart), [ficha](../lib/screens/workshop_detail_screen.dart), [reserva](../lib/screens/booking_screen.dart). | Revisar consistencia visual y navegación manualmente; no es una comparación visual completa de todas las pantallas. |
+| I08 · Baja | Los errores del formulario contienen instrucciones específicas y los resultados muestran «Cita confirmada» o «Cita cancelada» por escrito. | No se ha ejecutado una simulación cromática de Flutter ni comprobado si el formato de cada aviso hace suficientemente identificable el error. La revisión del HTML no demuestra el resultado de Flutter. |
+
+No se asignan responsables ni se cierran incidencias sin validación. Para verificar en el entorno disponible: `flutter analyze --no-pub` y `flutter test --no-pub`; después reproducir los recorridos en Android con TalkBack, volver tras cancelar y comprobar selección, foco y anuncios. Adjuntar la salida y capturas al registro de coordinación.

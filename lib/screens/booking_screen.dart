@@ -226,6 +226,8 @@ class _BookingScreenState extends State<BookingScreen> {
             labelText: 'Teléfono',
             floatingLabelBehavior: FloatingLabelBehavior.always,
             border: OutlineInputBorder(),
+            helperText: 'De 9 a 15 dígitos; puedes incluir el prefijo.',
+            helperMaxLines: 3,
             errorMaxLines: 3,
           ),
           keyboardType: TextInputType.phone,

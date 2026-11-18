@@ -154,6 +154,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                       workshop: appointment.workshop,
                       day: day,
                       slot: _slot,
+                      currentSlot: appointment.slot,
                       onDayChanged: (value) => setState(() {
                         _day = value;
                         _slot = null;
