@@ -1,6 +1,6 @@
 # TallerClick — Tareas de desarrollo y verificación (semana 5)
 
-**Estado inicial:** código Flutter aún sin implementar; pruebas TalkBack y texto al 200 % no realizadas; incidencias del Grupo E sin corregir. Las casillas se dejan **sin marcar** por este motivo.
+**Estado actualizado (2026-11-18):** R1 implementado e integrado en `main` mediante la [PR #2](https://github.com/scampg00/TallerClick-Flutter/pull/2). Se han superado seis pruebas de widgets, incluida la ejecución con texto al 200 %, y el análisis directo de Dart. Hay capturas del renderizado de Flutter; siguen pendientes la conexión real con R2, la prueba manual en Android, TalkBack y la validación de las incidencias del Grupo E. `flutter analyze` no se registra como superado por el fallo de inicialización documentado en [R1_VERIFICACION.md](docs/R1_VERIFICACION.md).
 
 **Cómo usar la tabla:** una fila está completada solo cuando su resultado y evidencia existen. Cambiar `[ ]` a `[x]`, escribir fecha `AAAA-MM-DD` y poner ruta de captura, prueba, commit o PR. Una revisión pendiente no equivale a un aprobado.
 
@@ -19,14 +19,16 @@
 
 | Hecho | ID | Tarea concreta | Criterio para cerrar | Fecha completado | Evidencia / PR |
 |:---:|---|---|---|---|---|
-| [ ] | S01 | Crear pantalla de inicio con «Buscar taller» y «Mis citas» | Accesos visibles, legibles y navegables | — | — |
-| [ ] | S02 | Preparar catálogo de talleres ficticios con zona, dirección, servicios | Datos coherentes y sin API externa | — | — |
-| [ ] | S03 | Implementar selección de zona y listado de talleres | R1 permite encontrar una opción | — | — |
-| [ ] | S04 | Construir ficha de taller con descripción sencilla de servicios | Sin jerga técnica sin explicar | — | — |
-| [ ] | S05 | Permitir seleccionar taller y servicio y transmitir selección a R2 | Isaac recibe datos correctos para reservar | — | — |
-| [ ] | S06 | Añadir estados sin resultados, carga simulada si aplica y «Volver» | No hay pantallas bloqueadas ni mensajes ambiguos | — | — |
-| [ ] | S07 | Revisar etiquetas, orden de lectura y botones ≥48×48 en R1 | Revisión manual documentada | — | — |
-| [ ] | S08 | Probar R1 y entregar captura + breve registro de ejecución | R1 se completa en dispositivo objetivo | — | — |
+| [x] | S01 | Crear pantalla de inicio con «Buscar taller» y «Mis citas» | Accesos visibles, legibles y navegables | 2026-11-17 | [Inicio](lib/main.dart), [pruebas](test/widget_test.dart) y [PR #2](https://github.com/scampg00/TallerClick-Flutter/pull/2). «Mis citas» conserva un destino provisional hasta integrar R3. |
+| [x] | S02 | Preparar catálogo de talleres ficticios con zona, dirección, servicios | Datos coherentes y sin API externa | 2026-11-17 | [Catálogo local](lib/data/workshop_catalog.dart): cuatro talleres y cinco servicios con descripción; [PR #2](https://github.com/scampg00/TallerClick-Flutter/pull/2). |
+| [x] | S03 | Implementar selección de zona y listado de talleres | R1 permite encontrar una opción | 2026-11-17 | [Búsqueda](lib/screens/workshop_search_screen.dart), [captura](docs/evidence/r1/search-normal.png) y prueba de filtrado y recuperación en [widget_test.dart](test/widget_test.dart); [PR #2](https://github.com/scampg00/TallerClick-Flutter/pull/2). |
+| [x] | S04 | Construir ficha de taller con descripción sencilla de servicios | Sin jerga técnica sin explicar | 2026-11-17 | [Ficha](lib/screens/workshop_detail_screen.dart), [descripciones](lib/data/workshop_catalog.dart) y [captura](docs/evidence/r1/service-normal.png); [PR #2](https://github.com/scampg00/TallerClick-Flutter/pull/2). |
+| [ ] | S05 | Permitir seleccionar taller y servicio y transmitir selección a R2 | Isaac recibe datos correctos para reservar | — | Selección única y entrega mediante `bookingPageBuilder` implementadas y probadas con un destino de prueba. Falta conectar la pantalla real de Isaac y ejecutar T01; [registro](docs/R1_VERIFICACION.md). |
+| [x] | S06 | Añadir estados sin resultados, carga simulada si aplica y «Volver» | No hay pantallas bloqueadas ni mensajes ambiguos | 2026-11-17 | [Pruebas](test/widget_test.dart) de zona vacía, recuperación, referencia inválida y regreso conservando búsqueda/selección; [PR #2](https://github.com/scampg00/TallerClick-Flutter/pull/2). Catálogo en memoria sin espera simulada. |
+| [ ] | S07 | Revisar etiquetas, orden de lectura y botones ≥48×48 en R1 | Revisión manual documentada | — | Superadas las guías automáticas de etiquetas, tamaño táctil y contraste de texto en inicio, búsqueda y ficha. Pendientes revisión manual y orden de lectura con TalkBack; [registro](docs/R1_VERIFICACION.md). |
+| [ ] | S08 | Probar R1 y entregar captura + breve registro de ejecución | R1 se completa en dispositivo objetivo | — | Seis pruebas de widgets superadas, capturas normales/al 200 % y arranque en Chrome registrados. Falta ejecución manual completa en Android; [registro y capturas](docs/R1_VERIFICACION.md). |
+
+Actualización solicitada por Santiago el 2026-11-18 tras revisar la entrega. Las fechas de las filas marcadas corresponden a la implementación, las evidencias y la integración del 2026-11-17. Las seis pruebas y `dart analyze lib test` se repitieron el 2026-11-18 con resultado satisfactorio. El coordinador mantiene la validación final; no se atribuye su aprobación ni se cierran tareas de otros integrantes o comprobaciones conjuntas.
 
 ## 2. Isaac Caño Calvo — R2: selección de fecha/hora y reserva
 
