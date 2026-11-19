@@ -184,4 +184,71 @@ void main() {
     expect(find.text('Sí, cancelar cita'), findsNothing);
     expect(repository.appointments, hasLength(1));
   });
+
+  for (final scale in [1.0, 2.0]) {
+    testWidgets(
+      'Volver a Mis citas sale de todas las vistas con un toque a escala $scale',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(390, 844));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        tester.platformDispatcher.textScaleFactorTestValue = scale;
+        addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+        final repository = newRepository();
+        final original = seed(repository, 9);
+        await tester.pumpWidget(TallerClickApp(repository: repository));
+        await tapVisible(tester, find.text('Mis citas'));
+
+        for (final view in ['detail', 'schedule', 'review', 'cancel']) {
+          await tapVisible(tester, find.text('Ver cita TC-0001'));
+          if (view == 'schedule' || view == 'review') {
+            await tapVisible(tester, find.text('Cambiar fecha y hora'));
+          }
+          if (view == 'review') {
+            await tapVisible(tester, find.text('11:00 · Disponible'));
+            await tapVisible(tester, find.text('Revisar cambio'));
+          }
+          if (view == 'cancel') {
+            await tapVisible(tester, find.text('Cancelar cita'));
+          }
+
+          await tapVisible(tester, find.text('Volver a Mis citas'));
+          expect(find.text('Mis citas'), findsOneWidget, reason: view);
+          expect(find.text('Ver cita TC-0001'), findsOneWidget, reason: view);
+          expect(repository.appointments, hasLength(1));
+          expect(repository.find(original.reference), same(original));
+          expect(tester.takeException(), isNull);
+        }
+      },
+    );
+  }
+
+  testWidgets('Atrás del sistema conserva el regreso entre pasos de edición', (
+    tester,
+  ) async {
+    final repository = newRepository();
+    final original = seed(repository, 9);
+    await tester.pumpWidget(TallerClickApp(repository: repository));
+    await tapVisible(tester, find.text('Mis citas'));
+    await tapVisible(tester, find.text('Ver cita TC-0001'));
+    await tapVisible(tester, find.text('Cambiar fecha y hora'));
+    await tapVisible(tester, find.text('11:00 · Disponible'));
+    await tapVisible(tester, find.text('Revisar cambio'));
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('Cambiar fecha y hora'), findsOneWidget);
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('Detalle de la cita'), findsOneWidget);
+
+    await tapVisible(tester, find.text('Cancelar cita'));
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('Detalle de la cita'), findsOneWidget);
+    expect(repository.find(original.reference), same(original));
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('Mis citas'), findsOneWidget);
+  });
 }

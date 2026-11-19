@@ -191,10 +191,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                     _button('Sí, cancelar cita', () => _apply(true)),
                   ],
                 ],
-                _button(
-                  'Volver a Mis citas',
-                  () => Navigator.maybePop(context),
-                ),
+                _button('Volver a Mis citas', () => Navigator.pop(context)),
               ],
             ),
           ),

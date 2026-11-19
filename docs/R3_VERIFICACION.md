@@ -69,3 +69,13 @@ CAPTURE_EVIDENCE=1 FLUTTER_ROOT="<ruta al SDK Flutter>" flutter test --no-pub te
 - `flutter devices`: solo Linux; Android y TalkBack pendientes.
 - No se ejecutó `flutter run` ni se fusionó o publicó una PR.
 - Casillas de `TASKS.md` conservadas: implementación y evidencias disponibles para revisión, sin atribuir confirmaciones a los responsables.
+
+## Corrección de regreso al listado (2026-11-19)
+
+«Volver a Mis citas» cerraba primero el paso interno de edición o cancelación porque usaba `Navigator.maybePop` y quedaba interceptado por `PopScope`. Ahora la acción explícita usa `Navigator.pop` para regresar al listado con una pulsación desde detalle, horarios, revisión del cambio y confirmación de cancelación. Atrás del sistema y la flecha de la barra conservan el regreso entre pasos; salir al listado descarta las propuestas sin confirmar y conserva la cita original.
+
+Se añadieron dos pruebas de regreso directo, con escala 1 y 2 a 390 × 844 píxeles lógicos, y una prueba de Atrás del sistema. Las primeras comprueban las cuatro vistas y que la cita mantiene su referencia, datos y estado sin operaciones adicionales. La última comprueba revisión → horarios → detalle y confirmación de cancelación → detalle antes de salir al listado.
+
+Verificación en Windows, Flutter 3.47.4 y Dart 3.13.3: `flutter test test/appointment_management_test.dart` superó ocho pruebas; `flutter test` superó las 19 pruebas de la suite; `dart analyze lib test` no encontró incidencias y `git diff --check` no encontró errores de espacios. En la revisión previa de este entorno, `flutter analyze --no-pub` falló al inicializar por el problema de longitud del mensaje con la ruta no ASCII; no se registra como aprobado aquí.
+
+Para reproducir manualmente: Mis citas → Ver cita → Cancelar cita → Volver a Mis citas. Debe aparecer el listado con una sola pulsación y la cita debe seguir confirmada. Repetir desde Cambiar fecha y hora y desde Revisa el cambio, y comprobar que la fecha y hora originales se mantienen. Las pruebas automatizadas incluyen también texto al 200 %; esta corrección no se ha vuelto a ejecutar en Android ni con TalkBack.
