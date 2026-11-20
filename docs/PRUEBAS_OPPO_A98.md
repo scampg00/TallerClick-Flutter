@@ -70,3 +70,11 @@ Con texto ampliado, comprueba especialmente menús, errores y botones al final d
 ## Registrar el resultado
 
 Anota fecha, OPPO A98 5G, versiones de Android/ColorOS/TalkBack, versión de TallerClick, ajuste de fuente y pasos ejecutados. Guarda capturas normal/ampliada y describe cualquier fallo con sus pasos. Para TalkBack, añade lo que escuchaste o una grabación con datos ficticios. Separa los casos probados de los pendientes antes de actualizar `TASKS.md`.
+
+## Resultado comunicado por Santiago
+
+El 2026-11-20, Santiago confirmó en la conversación que la nueva versión funcionaba correctamente en su OPPO A98 5G. Al preguntarle expresamente por el texto al 200 % y TalkBack con audio, respondió: «Lo he probado todo, el 200% y el Tallback tambien». La versión de referencia de esta entrega es [TallerClick 1.0.1, compilación 2](https://github.com/scampg00/TallerClick-Flutter/releases/tag/test-1.0.1-2026-11-20), del commit `7b97bc6`.
+
+Se registra como prueba manual comunicada por el responsable: funcionamiento general, texto al 200 % y uso audible de TalkBack, sin incidencias comunicadas. Complementa las 20 pruebas automatizadas y las capturas de widgets de [la entrega](CAMBIOS_1_0_1.md); no se presenta como una ejecución del asistente en el teléfono.
+
+No se han facilitado nuevas capturas del OPPO, grabaciones, versiones de Android/ColorOS/TalkBack ni transcripciones de los anuncios. El 200 % se registra según la confirmación de Santiago, sin atribuir una medición ADB. La validación final del coordinador y de los demás responsables sigue pendiente.
