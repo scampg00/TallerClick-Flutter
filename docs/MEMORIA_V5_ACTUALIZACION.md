@@ -1,33 +1,41 @@
-# Memoria v5 — propuesta de actualización de la semana 5
+# Memoria v5 — actualización de la semana 5
 
-Texto editable para integrar en las páginas 21–23 de `Grupo_T-Memoria_v5_provisional.pdf`. Conserva las semanas 1–4 como antecedentes históricos. Es una propuesta para revisión del equipo, no una modificación ni una versión final del PDF original.
+**Estado: versión preparada para revisión del equipo, 20/11/2026.** Esta sección actualiza el borrador de la semana 5 de la memoria provisional. Las semanas 1–4 se conservan como antecedentes: sus resultados describen las versiones y prototipos examinados entonces.
 
-## Implementación y alcance
+## 1. Implementación y alcance
 
-TallerClick dispone de una implementación Flutter integrada para los tres recorridos: búsqueda de taller y servicio (R1), selección de fecha/hora y reserva con resumen (R2), y consulta, cambio y cancelación (R3). El catálogo es ficticio y las citas se mantienen en memoria mientras la aplicación está abierta; no existe conexión con talleres reales, backend ni persistencia entre reinicios. El repositorio compartido comprueba la disponibilidad y las operaciones de cambio y cancelación conservan la referencia.
+TallerClick dispone de una implementación Flutter integrada para buscar un taller y elegir un servicio (R1), seleccionar fecha y hora, introducir contacto, revisar y confirmar una reserva (R2), y consultar, modificar o cancelar una cita (R3). El catálogo usa barrios de León; los talleres, direcciones y datos de prueba son ficticios. Las reservas se mantienen en memoria mientras la aplicación está abierta y se reinician al cerrar el proceso. No hay backend, cuentas, pagos ni conexión con talleres reales.
 
-La interfaz utiliza controles Material, etiquetas en español, confirmación antes de cancelar y estados expresados mediante texto. La reserva valida nombre y teléfono y conserva los datos al corregir. Los resultados incluyen referencia y estado. El código y las decisiones de integración están descritos en [R3](R3_VERIFICACION.md) y en el [registro de Hugo](HUGO_INTEGRACION_ACCESIBILIDAD.md).
+La versión 1.0.1, compilación 2, organiza las citas confirmadas y canceladas en apartados distintos. La cita cancelada conserva referencia y detalle, muestra estado escrito, icono y borde, y deja de ofrecer acciones de cambio y cancelación. La selección de una hora se expresa mediante texto y control de selección; al cambiar una cita, la franja original se identifica como «Tu hora actual». Las operaciones conservan la referencia y comprueban la disponibilidad antes de aplicarse. La cancelación exige una confirmación con una opción para mantener la cita. [Cambios y evidencias de la versión 1.0.1](CAMBIOS_1_0_1.md).
 
-## Evidencias y verificación
+## 2. Accesibilidad y validación técnica
 
-El [registro de integración del 18/11/2026](HUGO_INTEGRACION_ACCESIBILIDAD.md) recoge una ejecución en Windows, con Flutter 3.47.4 y Dart 3.13.3, en la que `flutter analyze --no-pub` terminó sin incidencias y `flutter test --no-pub` superó 16 pruebas. Cubren la entrega R1→R2, selección de hora, validación y recuperación de errores, confirmación única, consulta, cambio, cancelación y rechazo de operaciones antiguas. El recorrido integrado de widgets se ejecuta a escala normal y al 200 % en 390 × 844 píxeles lógicos; las capturas de widgets están enlazadas en [R1](R1_VERIFICACION.md), [R2](R2_VERIFICACION.md) y [R3](R3_VERIFICACION.md).
+La interfaz utiliza controles Material, textos en español, servicios con descripción breve, mensajes por campo y un resumen antes de confirmar. Las fechas y horas disponibles y ocupadas, la selección, los errores y los estados se expresan con texto además de sus estilos visuales. El formulario conserva datos válidos al corregir un error y el teléfono informa del formato esperado.
 
-La [corrección del 19/11/2026](R3_VERIFICACION.md#corrección-de-regreso-al-listado-2026-11-19) permite volver directamente a Mis citas desde cualquier paso de gestión sin aplicar cambios pendientes. La suite ampliada superó 19 pruebas y el análisis directo con Dart no encontró incidencias. En este entorno, `flutter analyze` falla al inicializar con la ruta que contiene caracteres no ASCII; se distingue ese fallo de herramienta del resultado del análisis directo.
+La documentación de la versión 1.0.1 registra en Windows, con Flutter 3.47.4 y Dart 3.13.3, **20 pruebas automatizadas superadas** mediante `flutter test` y `dart analyze lib test` sin incidencias. Incluyen búsqueda, selección, validación, reserva única, consulta, cambio, cancelación, navegación y aislamiento de citas. La suite integrada incluye pruebas con texto normal y al 200 % a 390 × 844 píxeles lógicos y guías automáticas de Flutter para etiquetas, áreas táctiles y contraste de texto en los estados comprobados. El `flutter analyze` del 19/11/2026 falló al inicializar en una ruta con caracteres no ASCII; ese resultado no se presenta como aprobado. [Registro de la versión](CAMBIOS_1_0_1.md) y [verificación R3](R3_VERIFICACION.md).
 
-Las guías automáticas de Flutter han comprobado etiquetas y objetivos táctiles en las vistas ensayadas, y contraste de texto en R1 y en las partes renderizadas durante reserva y gestión. Entre los pares de la paleta, `#123A4A` sobre blanco mide 12,14:1 y sobre `#F1F6F7` 11,14:1. Estas pruebas no demuestran todos los colores efectivos, bordes y estados; tampoco sustituyen una evaluación manual o con lector de pantalla.
+En la paleta, el texto `#123A4A` sobre blanco mide 12,14:1 y sobre `#F1F6F7` 11,14:1; el par `#415B67` sobre blanco mide 7,20:1. Estas mediciones y las guías automáticas no acreditan todos los bordes, iconos, focos o combinaciones efectivamente renderizadas. Las vistas largas requieren desplazamiento. Las capturas del repositorio son renderizados de widgets o capturas del emulador, no fotografías del OPPO.
 
-La aplicación arrancó en Chrome para depuración, con un aviso de que el proyecto no tiene configuración web; no se completó una revisión manual de los recorridos allí. Tras un primer intento de compilación Android sin resultado, el 18/11/2026 se compiló, instaló y ejecutó la app en el emulador `TallerClick_API35`, Android 35 x86_64, desde una copia de trabajo fuera de OneDrive. Se recorrieron R1–R3 con texto normal y al 200 % mediante ADB y se guardaron capturas del resultado cancelado. El [registro Android](ANDROID_VERIFICACION.md) distingue los pasos comprobados por el árbol de accesibilidad de la revisión visual de las capturas; no acredita una evaluación manual exhaustiva ni una ejecución en teléfono físico.
+## 3. Pruebas en Android y TalkBack
 
-TalkBack se enlazó temporalmente en el emulador, pero sin audio no se verificaron las frases anunciadas ni el orden de lectura. La [revisión de accesibilidad](REVISION_ACCESIBILIDAD.md) mantiene pendiente la prueba audible, especialmente las etiquetas de los campos, el selector de día y los avisos. No se ha realizado una prueba con usuarios en esta fase. El APK utilizado en el recorrido Android es anterior a la etiqueta «Tu hora actual» y a la corrección del regreso directo a Mis citas: estas modificaciones requieren una nueva comprobación en Android.
+El 18/11/2026 se compiló, instaló y recorrió una versión anterior en un emulador Android 35 x86_64, con texto normal y al 200 %, mediante pulsaciones enviadas por ADB e inspección del árbol de accesibilidad. Se recorrieron búsqueda, reserva, cambio y cancelación, y se guardaron capturas del resultado. Esta prueba no acredita revisión visual exhaustiva ni escucha de TalkBack: el emulador se ejecutó sin audio. [Registro del emulador](ANDROID_VERIFICACION.md).
 
-## Revisión cruzada
+El 20/11/2026 Santiago comunicó que había probado la versión 1.0.1 en un OPPO A98 5G y que funcionaba correctamente, incluido el texto al 200 % y TalkBack con audio. Hugo trasladó después que Santiago completó un recorrido de reserva con TalkBack y no encontró incidencias. No se comunicaron correcciones derivadas de esa prueba. Se registra como confirmación del responsable, no como ejecución del asistente en ese teléfono. No se facilitaron capturas nuevas del OPPO, grabaciones, transcripciones de los anuncios ni versiones de Android, ColorOS o TalkBack; el 200 % se recoge según su confirmación, sin atribuir una medición ADB. [Resultado y límites](PRUEBAS_OPPO_A98.md#resultado-comunicado-por-santiago).
 
-El Excel original del Grupo E recoge ocho incidencias del prototipo HTML: una alta, cuatro medias y tres bajas. La [comparación con Flutter](GRUPO_E_REVISION_FLUTTER.md) relaciona cada incidencia con código y pruebas, y mantiene pendientes la verificación con TalkBack, la gestión del foco, la evaluación visual y la validación de los responsables. No se afirma que la revisión del prototipo anterior se haya repetido ni que las ocho incidencias estén cerradas.
+## 4. Revisión cruzada y pendientes
 
-## Pendientes antes de la entrega definitiva
+El Excel original del Grupo E documenta ocho incidencias del prototipo HTML de la semana 4: una alta, cuatro medias y tres bajas. En Flutter se incorporaron comprobaciones para evitar confirmaciones repetidas, distinguir la hora actual, rechazar contacto inválido y mantener el estado tras cancelar. La [revisión de las ocho incidencias](GRUPO_E_REVISION_FLUTTER.md) vincula cada caso con el código y las pruebas disponibles. La revisión del prototipo anterior no equivale a repetirla en Flutter y las ocho incidencias no se declaran cerradas sin validación conjunta.
 
-- Recompilar la versión actual y repetir R1–R3 en Android, con texto normal y al 200 %, completando la revisión visual de todas las pantallas y estados. Conservar como antecedente el recorrido automatizado y las capturas del 18/11/2026.
-- Realizar una prueba con TalkBack y registrar orden de lectura, roles, selección y anuncios de error y resultado.
-- Medir las combinaciones efectivas y componentes aún no comprobados, y revisar la presentación de avisos sin color.
-- Validar con el equipo las ocho incidencias, los contratos y los recorridos; actualizar `TASKS.md` solo con evidencia y validación.
-- Integrar este texto en una versión editable de la memoria, comprobar las capturas y exportar el PDF final cuando corresponda.
+Siguen pendientes la validación final del coordinador y de los demás responsables; la asignación y cierre formal de las incidencias del Grupo E; la comprobación detallada de foco, etiquetas y anuncios con TalkBack cuando corresponda; y la revisión completa de contrastes y estados sin depender del color. No se declara conformidad global de accesibilidad ni se atribuyen capturas o mediciones no realizadas. El seguimiento y la evidencia por tarea se mantienen en [TASKS.md](../TASKS.md).
+
+## 5. Evidencias para la entrega
+
+- [Cambios, versión y capturas normal/200 % de Flutter 1.0.1](CAMBIOS_1_0_1.md).
+- [Verificación integrada, regreso y pruebas de R3](R3_VERIFICACION.md).
+- [Prueba en emulador Android y capturas](ANDROID_VERIFICACION.md).
+- [Confirmación de Santiago en OPPO A98 5G y límites](PRUEBAS_OPPO_A98.md#resultado-comunicado-por-santiago).
+- [Revisión de accesibilidad, TalkBack e incidencias](REVISION_ACCESIBILIDAD.md).
+
+Para reproducir las pruebas técnicas desde la raíz del repositorio: `flutter pub get`, `flutter test` y `dart analyze lib test`. Registrar sistema, versión del SDK, dispositivo y salida real; en Android seguir la guía de pruebas con datos ficticios.
+
+Repositorio del proyecto: https://github.com/scampg00/TallerClick-Flutter
