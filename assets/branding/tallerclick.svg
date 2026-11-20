@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 108 108">
+<title>TallerClick: coche con una marca de confirmación</title>
+<rect width="108" height="108" fill="#123A4A"/>
+<g transform="translate(54 54) scale(.86) translate(-54 -54)">
+<path d="M36,33 L70,33 L80,48 L29,48 Z" fill="#FFFFFF"/>
+<path d="M31,46 H77 Q83,46 83,52 V63 Q83,69 77,69 H31 Q25,69 25,63 V52 Q25,46 31,46 Z" fill="#FFFFFF"/>
+<path d="M39,38 L67,38 L72,46 L34,46 Z" fill="#123A4A"/>
+<path d="M32,64 H36 Q39,64 39,67 V73 Q39,76 36,76 H32 Q29,76 29,73 V67 Q29,64 32,64 Z" fill="#FFFFFF"/>
+<path d="M72,64 H76 Q79,64 79,67 V73 Q79,76 76,76 H72 Q69,76 69,73 V67 Q69,64 72,64 Z" fill="#FFFFFF"/>
+<path d="M31,55 a3,3 0,1,0 6,0 a3,3 0,1,0 -6,0" fill="#123A4A"/>
+<path d="M71,55 a3,3 0,1,0 6,0 a3,3 0,1,0 -6,0" fill="#123A4A"/>
+<path d="M45,54 H63 Q65,54 65,56 V57 Q65,59 63,59 H45 Q43,59 43,57 V56 Q43,54 45,54 Z" fill="#123A4A"/>
+<path d="M63,72 a14,14 0,1,0 28,0 a14,14 0,1,0 -28,0" fill="#123A4A"/>
+<path d="M65.5,72 a11.5,11.5 0,1,0 23.0,0 a11.5,11.5 0,1,0 -23.0,0" fill="#FFFFFF"/>
+<path d="M71,72 L75,76 L83,67" fill="none" stroke="#123A4A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</g></svg>

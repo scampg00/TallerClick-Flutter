@@ -54,7 +54,7 @@ class _WorkshopSearchScreenState extends State<WorkshopSearchScreen> {
             Semantics(
               header: true,
               child: Text(
-                'Buscar taller',
+                'Buscar taller en León',
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),

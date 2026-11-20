@@ -41,35 +41,40 @@ const workshopServices = <WorkshopService>[
 const workshops = <Workshop>[
   Workshop(
     id: 'workshop-centre-01',
-    name: 'Taller Demo Centro',
-    zone: 'Centro',
-    address: 'Calle de Ejemplo, 10',
+    name: 'Taller Demo Chantría',
+    zone: 'La Chantría',
+    address: 'Calle de Ejemplo, 10 · León',
     services: [_oilChange, _tyreCheck, _basicCheck],
   ),
   Workshop(
     id: 'workshop-centre-02',
     name: 'Taller Demo Plaza',
-    zone: 'Centro',
-    address: 'Plaza de Muestra, 4',
+    zone: 'La Chantría',
+    address: 'Plaza de Muestra, 4 · León',
     services: [_brakeCheck, _batteryCheck],
   ),
   Workshop(
     id: 'workshop-north-01',
-    name: 'Taller Demo Norte',
-    zone: 'Norte',
-    address: 'Avenida de Prueba, 22',
+    name: 'Taller Demo Eras',
+    zone: 'Eras de Renueva',
+    address: 'Avenida de Prueba, 22 · León',
     services: [_oilChange, _brakeCheck, _batteryCheck],
   ),
   Workshop(
     id: 'workshop-south-01',
-    name: 'Taller Demo Sur',
-    zone: 'Sur',
-    address: 'Calle del Prototipo, 8',
+    name: 'Taller Demo Palomera',
+    zone: 'La Palomera',
+    address: 'Calle del Prototipo, 8 · León',
     services: [_tyreCheck, _basicCheck],
   ),
 ];
 
-const workshopZones = <String>['Centro', 'Norte', 'Sur', 'Oeste'];
+const workshopZones = <String>[
+  'La Chantría',
+  'Eras de Renueva',
+  'La Palomera',
+  'El Ejido',
+];
 
 const demonstrationNotice =
-    'Prototipo de demostración. Los talleres y las direcciones son ficticios.';
+    'Prototipo para León. Los barrios son reales; los talleres y las direcciones son ficticios.';

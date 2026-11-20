@@ -42,7 +42,7 @@ Future<void> chooseZone(WidgetTester tester, String zone) async {
 
 Future<void> openPlaza(WidgetTester tester) async {
   await tapVisible(tester, find.text('Buscar taller'));
-  await chooseZone(tester, 'Centro');
+  await chooseZone(tester, 'La Chantría');
   await tapVisible(tester, find.text('Buscar talleres'));
   await tapVisible(tester, find.text('Ver taller: Taller Demo Plaza'));
 }
@@ -57,24 +57,24 @@ void main() {
     await tapVisible(tester, find.text('Buscar taller'));
     expect(find.text('4 talleres en todas las zonas'), findsOneWidget);
 
-    await chooseZone(tester, 'Centro');
+    await chooseZone(tester, 'La Chantría');
     expect(find.text('4 talleres en todas las zonas'), findsOneWidget);
     await tapVisible(tester, find.text('Buscar talleres'));
-    expect(find.text('2 talleres en Centro'), findsOneWidget);
-    expect(find.text('Taller Demo Norte'), findsNothing);
+    expect(find.text('2 talleres en La Chantría'), findsOneWidget);
+    expect(find.text('Taller Demo Eras'), findsNothing);
 
-    await chooseZone(tester, 'Oeste');
-    expect(find.text('2 talleres en Centro'), findsOneWidget);
+    await chooseZone(tester, 'El Ejido');
+    expect(find.text('2 talleres en La Chantría'), findsOneWidget);
     await tapVisible(tester, find.text('Buscar talleres'));
     expect(
-      find.textContaining('No hay talleres en la zona Oeste.'),
+      find.textContaining('No hay talleres en la zona El Ejido.'),
       findsOneWidget,
     );
 
-    await chooseZone(tester, 'Sur');
+    await chooseZone(tester, 'La Palomera');
     await tapVisible(tester, find.text('Buscar talleres'));
-    expect(find.text('1 taller en Sur'), findsOneWidget);
-    expect(find.text('Taller Demo Sur'), findsOneWidget);
+    expect(find.text('1 taller en La Palomera'), findsOneWidget);
+    expect(find.text('Taller Demo Palomera'), findsOneWidget);
 
     await chooseZone(tester, 'Todas las zonas');
     await tapVisible(tester, find.text('Buscar talleres'));
@@ -132,8 +132,12 @@ void main() {
       findsOneWidget,
     );
     await tapVisible(tester, find.text('Volver a los talleres'));
-    expect(find.text('2 talleres en Centro'), findsOneWidget);
-    await tapVisible(tester, find.text('Ver taller: Taller Demo Centro'));
+    expect(find.text('2 talleres en La Chantría'), findsOneWidget);
+    await tapVisible(tester, find.text('Ver taller: Taller Demo Chantría'));
+    await showVisible(
+      tester,
+      find.text('Selecciona un servicio para continuar.'),
+    );
     expect(find.text('Selecciona un servicio para continuar.'), findsOneWidget);
     await showVisible(tester, continueButton);
     expect(tester.widget<FilledButton>(continueButton).onPressed, isNull);
@@ -172,7 +176,7 @@ void main() {
                     workshop: const Workshop(
                       id: 'missing',
                       name: 'Referencia inexistente',
-                      zone: 'Centro',
+                      zone: 'La Chantría',
                       address: '',
                       services: [],
                     ),
@@ -222,8 +226,8 @@ void main() {
         .position
         .jumpTo(0);
     await tester.pumpAndSettle();
-    await showVisible(tester, find.text('2 talleres en Centro'));
-    expect(find.text('2 talleres en Centro'), findsOneWidget);
+    await showVisible(tester, find.text('2 talleres en La Chantría'));
+    expect(find.text('2 talleres en La Chantría'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
@@ -240,7 +244,7 @@ void main() {
       await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
       await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
       await expectLater(tester, meetsGuideline(textContrastGuideline));
-      await chooseZone(tester, 'Centro');
+      await chooseZone(tester, 'La Chantría');
       await tapVisible(tester, find.text('Buscar talleres'));
       await tapVisible(tester, find.text('Ver taller: Taller Demo Plaza'));
       await expectLater(tester, meetsGuideline(androidTapTargetGuideline));

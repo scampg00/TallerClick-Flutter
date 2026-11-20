@@ -185,6 +185,45 @@ void main() {
     expect(repository.appointments, hasLength(1));
   });
 
+  testWidgets(
+    'Las confirmadas aparecen antes que las canceladas sin perder su detalle',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(800, 1600));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final semantics = tester.ensureSemantics();
+      try {
+        final repository = newRepository();
+        final active = seed(repository, 9);
+        final cancelled = seed(repository, 11);
+        expect(repository.cancel(cancelled), isTrue);
+        await tester.pumpWidget(TallerClickApp(repository: repository));
+        await tapVisible(tester, find.text('Mis citas'));
+
+        expect(find.text('Citas confirmadas'), findsOneWidget);
+        expect(find.text('Citas canceladas'), findsOneWidget);
+        expect(find.text('Estas citas ya no están activas.'), findsOneWidget);
+        expect(find.byIcon(Icons.event_busy), findsOneWidget);
+        expect(
+          tester.getTopLeft(find.text('Ver cita ${active.reference}')).dy,
+          lessThan(
+            tester.getTopLeft(find.text('Ver cita ${cancelled.reference}')).dy,
+          ),
+        );
+        await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+        await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+        await expectLater(tester, meetsGuideline(textContrastGuideline));
+
+        await tapVisible(tester, find.text('Ver cita ${cancelled.reference}'));
+        expect(find.text('Cita cancelada'), findsOneWidget);
+        expect(find.text('Cancelar cita'), findsNothing);
+        expect(repository.appointments, hasLength(2));
+        expect(repository.find(active.reference), same(active));
+      } finally {
+        semantics.dispose();
+      }
+    },
+  );
+
   for (final scale in [1.0, 2.0]) {
     testWidgets(
       'Volver a Mis citas sale de todas las vistas con un toque a escala $scale',
