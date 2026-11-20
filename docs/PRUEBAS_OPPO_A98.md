@@ -77,4 +77,6 @@ El 2026-11-20, Santiago confirmó en la conversación que la nueva versión func
 
 Se registra como prueba manual comunicada por el responsable: funcionamiento general, texto al 200 % y uso audible de TalkBack, sin incidencias comunicadas. Complementa las 20 pruebas automatizadas y las capturas de widgets de [la entrega](CAMBIOS_1_0_1.md); no se presenta como una ejecución del asistente en el teléfono.
 
+El 2026-11-20, Hugo trasladó una aclaración de Santiago: probó un **recorrido completo de reserva con TalkBack** y no encontró ninguna incidencia. No se comunicaron correcciones derivadas de esa prueba; las mejoras existentes de la aplicación se describen en [la entrega 1.0.1](CAMBIOS_1_0_1.md), sin atribuirlas a este resultado. No se ha facilitado un desglose de gestos o anuncios concretos.
+
 No se han facilitado nuevas capturas del OPPO, grabaciones, versiones de Android/ColorOS/TalkBack ni transcripciones de los anuncios. El 200 % se registra según la confirmación de Santiago, sin atribuir una medición ADB. La validación final del coordinador y de los demás responsables sigue pendiente.
